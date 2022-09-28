@@ -5,6 +5,12 @@ Before running GMPipe:
  -GMPipe includes a thorough (and resource-intensive) phylogenetic clustering step using ML trees and is thus designed to be used on a computer cluster with a job scheduler like OpenLava or Slurm. Any job scheduler will work as long as you have the ability to submit all relevant commands as a single command line input, as this is required for Snakemake to submit jobs to your cluster. If you haven't already, please familiarize yourself with how to submit jobs with your cluster's specific job scheduler before running GMPipe. 
 
 2) Dependencies
+Snakemake
+MUSCLE (version 3.8.1551)
+HMMER= (version 3.1b2)
+IQTREE (version 1.6.11)
+
+While it is possible other versions may be compatible, GMPipe has only been tested and validated with these versions.
 
 3) Setting up the input files: 
 GMPipe requires the following set of protien sequences:
