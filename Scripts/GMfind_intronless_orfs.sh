@@ -2,7 +2,7 @@
 
 ## Please edit the GMfind_userinput.ctl file to adjust parameters and file locations before running
 ## To run:
-## $ bash path_to/GMPipe/Scripts/GMfind_intronless_orfs.bat path_to/GMfind_userinput.ctl
+## $ bash path_to/GMPipe/Scripts/GMfind_intronless_orfs.sh path_to/GMfind_userinput.ctl
 #-----------------------------------------------------
 
 source $1
