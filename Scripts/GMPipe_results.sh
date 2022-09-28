@@ -8,7 +8,7 @@
 ##    master_seq.fa: diverse subset of sequences from query_seqs.fa including a representatitive from each major subfamily in your ingroup
 
 ## To run:
-## $ bash path_to/GMPipe/Scripts/GMPipe_finish.sh path_to/GMPipeline_userinput.ctl
+## $ bash path_to/GMPipe/Scripts/GMPipe_results.sh path_to/GMPipeline_userinput.ctl
 ## Meant to be run with Snakemake
 #-----------------------------------------------------
 
