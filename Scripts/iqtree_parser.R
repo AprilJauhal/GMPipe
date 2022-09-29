@@ -9,7 +9,7 @@ PIPE_PATH <- commandArgs(trailingOnly=TRUE)[1]
 master_afa <- paste0(PIPE_PATH, "/storage/reference.afa")
 test_dir <- dir(paste0(PIPE_PATH, "/storage/ML/"))
 test_path <- (paste0(PIPE_PATH, "/storage/ML/"))
-ingroups_path <- paste0(PIPE_PATH, "/in/master_seq.fa")
+ingroups_path <- paste0(PIPE_PATH, "/in/ingroup_reps.fa")
 outgroups_path <- paste0(PIPE_PATH, "/in/outgroups.fa")
 query_dir <- dir(paste0(PIPE_PATH, "/storage/hmm/pass/"))
 query_path <- paste0(PIPE_PATH, "/storage/hmm/pass/")
