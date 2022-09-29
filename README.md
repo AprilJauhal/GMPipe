@@ -87,7 +87,7 @@ GMPipe is a gene mining pipeline designed to maximize the identification of mult
     NOTE: When identifying these sequences, keep in mind that methods such as tBLASTn that screen based on global pairwise comparisons may miss potential homologs and thus reduce the false negative rate for GMPipe.    
 
 3) Running GMPipe_start.sh:  
-    _This step screens sequences based on a HMM profile of the ingroups.fa sequences and optimizes the tree-building steps_
+    _This step screens sequences based on a HMM profile of the ingroups.fa sequences and optimizes the tree-building steps_  
     This script is designed to be submitted to a job scheduler. Be sure to specify the same number of threads as speciied in the GMPipeline_userinput.ctl file. 
 While optional for this particular step, GMPipe scripts are designed to run in the same directory as the Snakefile.
 
@@ -95,7 +95,7 @@ While optional for this particular step, GMPipe scripts are designed to run in t
     $ bash [path_to]/GMPipe/Scripts/GMPipe_start.sh [path_to]/GMPipeline_userinput.ctl
 
 4) Running Snakemake:  
-    _This step generates and parses trees for each query sequence with ingroup_reps.fa and outgroups.fa sequences_
+    _This step generates and parses trees for each query sequence with ingroup_reps.fa and outgroups.fa sequences_  
     IMPORTANT: this step must be called from the same directory as the "Snakefile" in the GMPipe directory. The "directory" below refers to the working directory that you selected in GMPipeline_userinput.ctl
 
     To run:  
@@ -112,7 +112,7 @@ While optional for this particular step, GMPipe scripts are designed to run in t
     NOTE: This step often stalls when it is nearly complete (due to Snakemake thinking that all of the jobs have completed due to rounding errors). If the main snakemake job is still running but not submitting more jobs, it may have stalled. If this happens, cancel and resubmit the main Snakemake job (it will resubmitd the required jobs without needing to redo previous steps). 
 
 5) Running GMPipe_results.sh:  
-    _This step sorts, compiles, and analyzes results_ 
+    _This step sorts, compiles, and analyzes results_  
     This script is designed to be submitted to a job scheduler. Be sure to specify the same number of threads as speciied in the GMPipeline_userinput.ctl file. 
 While optional for this particular step, GMPipe scripts are designed to run in the same directory as the Snakefile.
 
