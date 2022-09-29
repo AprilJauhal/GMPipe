@@ -6,7 +6,7 @@ library(stringr)
 PIPE_PATH <- commandArgs(trailingOnly=TRUE)[1]
 IQ_PATH <- commandArgs(trailingOnly=TRUE)[2]
 master_afa <- paste0(PIPE_PATH, "/storage/reference.afa")
-in_list <- paste0(PIPE_PATH, "/in/master_seq.fa")
+in_list <- paste0(PIPE_PATH, "/in/ingroup_reps.fa")
 out_list <- paste0(PIPE_PATH, "/in/outgroups.fa")
 MLpath <- paste0(PIPE_PATH, "/storage/opt_ML/")
 
