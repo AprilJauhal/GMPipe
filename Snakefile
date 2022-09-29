@@ -1,5 +1,5 @@
 #EXAMPLE RUN: snakemake --directory test_dir --jobs 999 --wait-for-files -w 500 --cluster 'bsub -J snakemake -n 1 -o Pipe_snakemake.stdout -e Pipe_snakemake.stderr'
-# Make sure to run GMPipe_start.bat first 
+# Make sure to run GMPipe_start.sh first 
 
 test_ORF, = glob_wildcards("storage/hmm/pass/{test_ORF}.fa")
 
