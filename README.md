@@ -88,6 +88,7 @@ GMPipe is a gene mining pipeline designed to maximize the identification of mult
 
 3) Running GMPipe_start.sh:  
     _This step screens sequences based on a HMM profile of the ingroups.fa sequences and optimizes the tree-building steps_  
+    
     This script is designed to be submitted to a job scheduler. Be sure to specify the same number of threads as speciied in the GMPipeline_userinput.ctl file. 
 While optional for this particular step, GMPipe scripts are designed to run in the same directory as the Snakefile.
 
@@ -96,6 +97,7 @@ While optional for this particular step, GMPipe scripts are designed to run in t
 
 4) Running Snakemake:  
     _This step generates and parses trees for each query sequence with ingroup_reps.fa and outgroups.fa sequences_  
+    
     IMPORTANT: this step must be called from the same directory as the "Snakefile" in the GMPipe directory. The "directory" below refers to the working directory that you selected in GMPipeline_userinput.ctl
 
     To run:  
@@ -113,6 +115,7 @@ While optional for this particular step, GMPipe scripts are designed to run in t
 
 5) Running GMPipe_results.sh:  
     _This step sorts, compiles, and analyzes results_  
+    
     This script is designed to be submitted to a job scheduler. Be sure to specify the same number of threads as speciied in the GMPipeline_userinput.ctl file. 
 While optional for this particular step, GMPipe scripts are designed to run in the same directory as the Snakefile.
 
