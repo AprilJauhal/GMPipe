@@ -10,7 +10,15 @@
     * MUSCLE (version 3.8.1551)
     * HMMER (version 3.1b2)
     * IQTREE (version 1.6.11) 
-    * R (version 3.6.1; 4.0.0 should work too) 
+    * R (version 3.6.1; 4.0.0 should work too); packages: 
+        * Biostrings
+        * stringr
+        * dplyr
+        * ORFik
+        * seqinr
+        * ape
+        * ggplot2
+        * ggpubr
 
     While it is possible other versions may be compatible, GMPipe has only been tested and validated with these versions.
 
