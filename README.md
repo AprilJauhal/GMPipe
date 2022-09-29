@@ -1,7 +1,5 @@
 # GMPipe: A gene mining pipeline for identifying multicopy gene families from genomes (validated for Olfactory Receptors)
 
-## What is GMPipe?
-
 ## Before running GMPipe:  
 1) Using a job scheduler:   
 
