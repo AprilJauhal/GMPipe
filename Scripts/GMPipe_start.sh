@@ -2,13 +2,13 @@
 
 ## Please run GMfind_intronless_orfs.bat first to populate Pipe/in with ORF_list.fa and ORF_record.txt for your genome of interest
 ## Please edit the GMfind_userinput.ctl file to adjust parameters and file locations before running
-## Please add the following files to Pipe/in/: ingroup_reps.fa, outgroups.fa, ingroups.fa
-##    ingroups.fa: fasta-formatted list of "ingroup" sequences
+## Please add the following files to Pipe/in/: master_seq.fa, outgroups.fa, query_seq.fa
+##    query_seq.fa: fasta-formatted list of "ingroup" sequences
 ##    outgroups.fa: fasta-formatted list of known "outgroup" sequences
-##    ingroup_reps.fa: diverse subset of sequences from ingroups.fa including a representatitive from each major subfamily in your ingroup
+##    master_seq.fa: diverse subset of sequences from query_seqs.fa including a representatitive from each major subfamily in your ingroup
 
 ## To run:
-## $ bash path_to/GMPipe/Scripts/GMPipe_start.sh path_to/GMPipeline_userinput.ctl
+## $ bash path_to/GMPipe/Scripts/GMPipe_start.bat path_to/GMPipeline_userinput.ctl
 
 #-----------------------------------------------------
 
@@ -40,26 +40,26 @@ else
   echo "ALIGNING SEQUENCES"
   timestamp=$(date +%F_%T)
   echo $timestamp
-  ${MUSCLE} -in ${PIPE_PATH}/in/ingroups.fa -out ${PIPE_PATH}/storage/ingroups.afa -quiet
-  ${MUSCLE} -in ${PIPE_PATH}/in/ingroup_reps.fa -out ${PIPE_PATH}/storage/ingroup_reps.afa -quiet
+  ${MUSCLE} -in ${PIPE_PATH}/in/query_seq.fa -out ${PIPE_PATH}/storage/query_seq.afa -quiet
+  ${MUSCLE} -in ${PIPE_PATH}/in/master_seq.fa -out ${PIPE_PATH}/storage/master_seq.afa -quiet
   ${MUSCLE} -in ${PIPE_PATH}/in/outgroups.fa -out ${PIPE_PATH}/storage/outgroups.afa -quiet
-  ${MUSCLE} -profile -in1 ${PIPE_PATH}/storage/outgroups.afa -in2 ${PIPE_PATH}/storage/ingroup_reps.afa -out ${PIPE_PATH}/storage/reference.afa -quiet
+  ${MUSCLE} -profile -in1 ${PIPE_PATH}/storage/outgroups.afa -in2 ${PIPE_PATH}/storage/master_seq.afa -out ${PIPE_PATH}/storage/reference.afa -quiet
   
   echo "GENERATING HMMER PROFILE"
   timestamp=$(date +%F_%T)
   echo $timestamp
   HMM_THREADS=$(expr $THREADS - 1)
-  ${HMMER}/bin/hmmbuild --amino --cpu $HMM_THREADS --informat afa ${PIPE_PATH}/storage/ingroups.hmm ${PIPE_PATH}/storage/ingroups.afa
+  ${HMMER}/bin/hmmbuild --amino --cpu $HMM_THREADS --informat afa ${PIPE_PATH}/storage/query_seq.hmm ${PIPE_PATH}/storage/query_seq.afa
   
   echo "RUNNING HMMER FOR INGROUPS"
   timestamp=$(date +%F_%T)
   echo $timestamp
-  ${HMMER}/bin/hmmsearch --cpu $HMM_THREADS -o in_hmm.out --tblout ${PIPE_PATH}/storage/hmm/ingroup.tblout --domtblout ${PIPE_PATH}/storage/hmm/ingroup.domtblout --noali --notextw --tformat fasta ${PIPE_PATH}/storage/ingroups.hmm ${PIPE_PATH}/in/ingroup_reps.fa
+  ${HMMER}/bin/hmmsearch --cpu $HMM_THREADS -o ${PIPE_PATH}/storage/hmm/in_hmm.out --tblout ${PIPE_PATH}/storage/hmm/ingroup.tblout --domtblout ${PIPE_PATH}/storage/hmm/ingroup.domtblout --noali --notextw --tformat fasta ${PIPE_PATH}/storage/query_seq.hmm ${PIPE_PATH}/in/master_seq.fa
   
   echo "RUNNING HMMER FOR OUTGROUPS"
   timestamp=$(date +%F_%T)
   echo $timestamp
-  ${HMMER}/bin/hmmsearch --cpu $HMM_THREADS -o out_hmm.out --tblout ${PIPE_PATH}/storage/hmm/outgroup.tblout --domtblout ${PIPE_PATH}/storage/hmm/outgroup.domtblout --noali --notextw --tformat fasta ${PIPE_PATH}/storage/ingroups.hmm ${PIPE_PATH}/in/outgroups.fa
+  ${HMMER}/bin/hmmsearch --cpu $HMM_THREADS -o ${PIPE_PATH}/storage/hmm/out_hmm.out --tblout ${PIPE_PATH}/storage/hmm/outgroup.tblout --domtblout ${PIPE_PATH}/storage/hmm/outgroup.domtblout --noali --notextw --tformat fasta ${PIPE_PATH}/storage/query_seq.hmm ${PIPE_PATH}/in/outgroups.fa
     
   echo "CALCULATING CUTOFF"
   timestamp=$(date +%F_%T)
@@ -90,7 +90,7 @@ else
   echo "RUNNING HMMER ON PUTATIVE ORFS"
   timestamp=$(date +%F_%T)
   echo $timestamp
-  ${HMMER}/bin/hmmsearch --cpu $HMM_THREADS -o hit_hmm.out --tblout ${PIPE_PATH}/storage/hmm/hit.tblout --domtblout ${PIPE_PATH}/storage/hmm/hit.domtblout --noali --notextw --tformat fasta ${PIPE_PATH}/storage/ingroups.hmm ${PIPE_PATH}/in/ORF_list.fa
+  ${HMMER}/bin/hmmsearch --cpu $HMM_THREADS -o ${PIPE_PATH}/storage/hmm/hit_hmm.out --tblout ${PIPE_PATH}/storage/hmm/hit.tblout --domtblout ${PIPE_PATH}/storage/hmm/hit.domtblout --noali --notextw --tformat fasta ${PIPE_PATH}/storage/query_seq.hmm ${PIPE_PATH}/in/ORF_list.fa
   
   echo "PROCESSING HMMER RESULTS"
   timestamp=$(date +%F_%T)
