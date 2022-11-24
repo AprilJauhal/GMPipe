@@ -34,11 +34,11 @@ fails_cutoff <- as.vector(subset(hit_tbl, score < cutoff)$target_name)
 
 ORF_hit_record <- subset(ORF_record, ORF_name %in% meets_cutoff)
 ORF_hit_names <- as.vector(ORF_hit_record$ORF_name)
-ORF_hit_seq <- str_replace(as.vector(ORF_hit_record$Sequence), "[*]", "")
+ORF_hit_seq <- str_replace(as.vector(ORF_hit_record$AA_Sequence), "[*]", "")
 
 ORF_miss_record <- subset(ORF_record, ORF_name %in% fails_cutoff)
 ORF_miss_names <- as.vector(ORF_miss_record$ORF_name)
-ORF_miss_seq <- str_replace(as.vector(ORF_miss_record$Sequence), "[*]", "")
+ORF_miss_seq <- str_replace(as.vector(ORF_miss_record$AA_Sequence), "[*]", "")
 
 # Retrieving sequences for hits
 hit_index=1
