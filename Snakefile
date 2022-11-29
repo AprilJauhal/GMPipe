@@ -87,4 +87,4 @@ rule FINALIZATION:
 		"out/PASSING_SEQUENCES.fa"
 	shell:
 		"source GMPipeline_userinput.ctl; "
-		"bash ${{SCRIPT_PATH}}/GMPipe_results.bat GMPipeline_userinput.ctl "
+		"bash ${{SCRIPT_PATH}}/GMPipe_results.sh GMPipeline_userinput.ctl "
