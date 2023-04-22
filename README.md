@@ -146,4 +146,9 @@ While optional for this particular step, GMPipe scripts are designed to run in t
     For Olfactory Receptors, including both the GN and PMLNPFIY motifs can also be used to define a "full-length" sequence, as these motifs are found on TM1 and TM7, respectively.  
 
 Additional notes:  
-Theoretically the three main scripts (how to run steps 3-5) can be run together through a master script, although the logistics of this may depend on your job scheduler. However, in my experience running the jobs as separate commands makes it easier to figure out if/where a step has stalled.
+Theoretically the three main scripts (how to run steps 3-5) can be run together through a master script, although the logistics of this may depend on your job scheduler. However, in my experience running the jobs as separate commands makes it easier to figure out if/where a step has stalled. 
+
+Troubleshooting:
+    * If the snakemake job is still running but not generating additional jobs, end and restart the job
+    * GMPipe is designed to stop prematurely if ingroup and outgroup sequences are too similar. If this happens, check the log file for errors such as "ERROR: INGROUP AND OUTGROUP HMMER BIT SCORES TOO SIMILAR", if this occurs, check and redesign outgroup.fa, ingroup.fa and master_seq.fa sequences. Make sure outgroup sequences are phyllogenetically distinct from ingroup sequences. The master_seq.fa sequences should represent a subset of ingroup sequences.  
+    * Ensure that the "snakemake" file is in the same folder that the commands are being called from. This file can be duplicated and placed into individual directories for each run but should not be edited. 
