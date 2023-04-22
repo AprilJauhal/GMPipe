@@ -111,7 +111,7 @@ While optional for this particular step, GMPipe scripts are designed to run in t
     
     The "--jobs" flag for Snakemake allows you to set the number of single threaded batch jobs that Snakemake submits to your cluster at a single time.  The larger the number, the faster it will run. If you have space availiable on your cluster. The more jobs you submit at a time, the faster this step will proceed.
  
-    NOTE: This step often stalls when it is nearly complete (due to Snakemake thinking that all of the jobs have completed due to rounding errors). If the main snakemake job is still running but not submitting more jobs, it may have stalled. If this happens, cancel and resubmit the main Snakemake job (it will resubmitd the required jobs without needing to redo previous steps). 
+    NOTE: This step often stalls when it is nearly complete (due to Snakemake thinking that all of the jobs have completed due to rounding errors). If the main snakemake job is still running but not submitting more jobs, it may have stalled. If this happens, cancel and resubmit the main Snakemake job (it will resubmit the required jobs without needing to redo previous steps). 
 
 5) Running GMPipe_results.sh:  
     _This step sorts, compiles, and analyzes results_  
