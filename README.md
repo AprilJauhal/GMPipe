@@ -107,7 +107,7 @@ While optional for this particular step, GMPipe scripts are designed to run in t
  
     Cluster commands just need to be simple single-threaded jobs, however, all elements required to submit a job to your cluster need to be included in this line. For ease of troubleshooting, please pick a different job name than you use for the snakemake command above.  
     Example of cluster commands for OpenLava:  
-    'bsub -J snakemake -n 1 -o Pipe_snakemake.stdout -e Pipe_snakemake.stderr'"
+    'bsub -J snakemake -n 1 -o Pipe_snakemake.stdout -e Pipe_snakemake.stderr'
     
     The "--jobs" flag for Snakemake allows you to set the number of single threaded batch jobs that Snakemake submits to your cluster at a single time.  The larger the number, the faster it will run. If you have space availiable on your cluster. The more jobs you submit at a time, the faster this step will proceed.
  
