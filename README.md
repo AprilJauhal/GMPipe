@@ -32,7 +32,7 @@ GMPipe is a gene mining pipeline designed to maximize the identification of mult
     * "query_seq.fa:": comprehensive set of sequences from your protein family of interest (eg. olfactory receptors) from either a closely related species or a variety of species
     * "outgroup.fa" smaller set of representative outgroup sequences representing the diversity of the closest homologs outside of the family of interest.  For ORs, this would be a variety of non-OR GPCR sequences.  
     * "master_seq.fa": diverse subset of sequences from query_seqs.fa including representatives from the major branches of a tree of the query_seq.fa sequences.  Ideally, should contain a similar number of sequences to outgroup.fa. 
-    * Please remove the following special characters from filenames for all of the above files (as well as any spaces or tabs): \, ., *, ?, +, |, ^, $, (, ), [, ], {, } 
+    * Please remove the following special characters from filenames for all of the above files (as well as any spaces or tabs): \` \[ \] \{ \} \(\) \< \> \# \% \& \+ \\ \$ \^ \| \~ \* 
     * NOTE: the time that GMPipe takes to run is related to the number of sequences in the outgroup.fa and master_seq.fa files--a diverse list is better than a long list here.  Conversely, the length of query_seq.fa doesn't significanntly affect the run time for GMPipe, so it is ok to submit a long list (although quality is still important as query_seq.fa is used for HMM-generation). While GMPipe does not accomoadate user-submitted HMM profiles, you can submit the sequences used to build a reference HMM profile from INTERPRO, PFAM, etc. as your query_seq.fa set.
 
 ## How to run:  
@@ -152,4 +152,5 @@ Theoretically the three main scripts (how to run steps 3-5) can be run together 
 Troubleshooting:
     * If the snakemake job is still running but not generating additional jobs, end and restart the job
     * GMPipe is designed to stop prematurely if ingroup and outgroup sequences are too similar. If this happens, check the log file for errors such as "ERROR: INGROUP AND OUTGROUP HMMER BIT SCORES TOO SIMILAR", if this occurs, check and redesign outgroup.fa, ingroup.fa and master_seq.fa sequences. Make sure outgroup sequences are phyllogenetically distinct from ingroup sequences. The master_seq.fa sequences should represent a subset of ingroup sequences.  
-    * Ensure that the "snakemake" file is in the same folder that the commands are being called from. This file can be duplicated and placed into individual directories for each run but should not be edited. 
+    * Ensure that the "snakemake" file is in the same folder that the commands are being called from (which is not necessarily the same directory where the analysis is done). This file can be duplicated and placed into individual directories for each run but should not be edited. 
+    * Make sure that you have removed special characters from the sequence names (if you are still having trouble you can try removing stop codons from the sequences themselves as well): \` \[ \] \{ \} \(\) \< \> \# \% \& \+ \\ \$ \^ \| \~ \* 
