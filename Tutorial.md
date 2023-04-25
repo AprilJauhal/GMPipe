@@ -122,10 +122,10 @@ If most of the files mentioned above are present (some may be absent if they wer
 
 I highly reccomend examining the unconstrained trees for the undetermined sequences. (Note that these sequences are not included in PASSING_SEQUENCES.fa and if they pass manual inspection you will need to generate a combined list yourself). Essentially, you want to make sure that the hits clustered with ingroups as opposed to outgroups. The constrained trees are easier to automatically parse but may not represent the highest scoring solution, so it is a good idea to manually inspect the unconstrained trees that are flagged. If hits cluster with ingroups instead of outroups for at least 9 out of 10 trees, you can count them as passing sequences. You can identify the paths to the unconstrained trees with the following code:
 ```
-    $ undet_hits=($( grep ">" test_zebrafish/out/MLtree_undet_sequences.fa | sed 's/>//g' ))
+    $ undet_hits=($( grep ">" tutorial/out/MLtree_undet_sequences.fa | sed 's/>//g' ))
     $ for undet_hit in "${undet_hits[@]}"
     $ do
-        $ ls test_zebrafish/storage/ML/${undet_hit}/${undet_hit}_unconstr**.iqtree
+        $ ls tutorial/storage/ML/${undet_hit}/${undet_hit}_unconstr**.iqtree
     $ done
 ```
 
