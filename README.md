@@ -145,8 +145,8 @@ Theoretically the two main scripts (how to run steps 3-4) can be run together th
 
 Troubleshooting:
 
-    * If the snakemake job is still running but not generating additional jobs, end and restart the job
-    * GMPipe is designed to stop prematurely if ingroup and outgroup sequences are too similar. If this happens, check the log file for errors such as "ERROR: INGROUP AND OUTGROUP HMMER BIT SCORES TOO SIMILAR", if this occurs, check and redesign outgroup.fa, ingroup.fa and master_seq.fa sequences. Make sure outgroup sequences are phyllogenetically distinct from ingroup sequences. The master_seq.fa sequences should represent a subset of ingroup sequences.  
-    * Ensure that the "snakemake" file is in the same folder that the commands are being called from (which is not necessarily the same directory where the analysis is done). This file can be duplicated and placed into individual directories for each run but should not be edited. 
-    * Make sure that you have removed special characters from the sequence names (if you are still having trouble you can try removing stop codons from the sequences themselves as well): \` \[ \] \{ \} \(\) \< \> \# \% \& \+ \\ \$ \^ \| \~ \* 
-    * If you are encountering issues running GMPipe, I reccomend trying the tutorial exercise to test if there are any issues with dependencies, etc.
+* If the snakemake job is still running but not generating additional jobs, end and restart the job
+* GMPipe is designed to stop prematurely if ingroup and outgroup sequences are too similar. If this happens, check the log file for errors such as "ERROR: INGROUP AND OUTGROUP HMMER BIT SCORES TOO SIMILAR", if this occurs, check and redesign outgroup.fa, ingroup.fa and master_seq.fa sequences. Make sure outgroup sequences are phyllogenetically distinct from ingroup sequences. The master_seq.fa sequences should represent a subset of ingroup sequences.  
+* Ensure that the "snakemake" file is in the same folder that the commands are being called from (which is not necessarily the same directory where the analysis is done). This file can be duplicated and placed into individual directories for each run but should not be edited. 
+* Make sure that you have removed special characters from the sequence names (if you are still having trouble you can try removing stop codons from the sequences themselves as well): \` \[ \] \{ \} \(\) \< \> \# \% \& \+ \\ \$ \^ \| \~ \* 
+* If you are encountering issues running GMPipe, I reccomend trying the tutorial exercise to test if there are any issues with dependencies, etc.
