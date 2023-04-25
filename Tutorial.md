@@ -43,7 +43,19 @@ To run with slurm (assuming 2 days wall-time allotment, but the script should ta
 > $ sbatch --job-name=GMstart-test --cpus-per-task=20 --nodes=1 --mem=1000 --time=02-00:00:00 --output="tutorial/logs/GMstart.%j.out" \
 > $ --wrap="bash Scripts/GMPipe_start.sh tutorial/GMPipeline_userinput.ctl"
 
-After running, there should be a "storage" folder, and there should be a 
+After running, there should be a "storage" folder, which should have the following contents:
+    * HMMER_FAIL.fa   
+    * HMMER_PASS.fa   
+    * master_seq.afa  
+    * outgroups.afa
+    * reference.afa
+    * query_seq.hmm
+    * query_seq.afa
+    * opt_ML/
+    * ML/
+    * hmm/ (if troubleshooting, make sure this contains a "bit_cutoff.txt" file)
+    
+If any of these sequences are missing, check the log. 
 
 ## STEP 3) snakemake
 This is the part where the snakemake pipeline is called. In order to work, the snakemake command must be called from the same directory that contains the snakefile. The snakefile can be moved or copied but should not be edited or renamed. The snakemake command creates a snakemake job that calls other jobs from your HPC job scheduler, and some examples are shown below. 
@@ -91,6 +103,9 @@ These files may also appear if an ORF record was included in the input folder
 
 If most of the files mentioned above are present (some may be absent if they were empty but check to ensure PASSING_SEQUENCES.fa is present), the next step is to examine some of the output files. 
 
-Ideally, you should also check the histogram file to see if there was appropriate separation of ingroup and outgroup sequences. The graph on the top has all hmmer-hit scores as well as the outgroup and master_seq (ingroup) scores, and the graph on the bottom is the same but lacks the tree-passing scores for ease of clarity. The most important thing to check for is that there is a large gap between the ingroup and outgroup sequences. In the tutorial example, there is a large gap. However, if there wasn't it would be a sign that the GMPipe input sequences might need adjusting in order to minimize false positives and negatives. If this is the case, make sure that the outgroup sequnces are phyllogenetically distinct from the ingroup sequences. This could happen if the ingroup is technically a subgroup of the outgroups and lacks distinct features or motifs, in which case, you mihgt need to rethinkk whether separation is possible without setting a high bitscore cutoff. 
+I highly reccomend examining the unconstrained trees for the undetermined sequences. (Note that these sequences are not included in PASSING_SEQUENCES.fa and if they pass manual inspection you will need to generate a combined list yourself). 
+
+Ideally, you should also check the histogram file to see if there was appropriate separation of ingroup and outgroup sequences. The graph on the top has all hmmer-hit scores as well as the outgroup and master_seq (ingroup) scores, and the graph on the bottom is the same but lacks the tree-passing scores for ease of clarity. The most important thing to check for is that there is a large gap between the ingroup and outgroup sequences. In the tutorial example, there is a large gap. However, if there wasn't it would be a sign that the GMPipe input sequences might need adjusting in order to minimize false positives and negatives. If this is the case, make sure that the outgroup sequnces are phyllogenetically distinct from the ingroup sequences. This could happen if the ingroup is technically a subgroup fo teh outgroups and lacks
+distinct features or motifs, in which case, you might need to rethink whether separation is possible without setting a high bits-core cut-off. You may also want to consider retroactively raising the bit-score cut-off if there is poor separation between outgroupand tree-passing sequences, depending on the goals of your analysis. The tutorial example is a borderline case. If the goal is obtaining a stringent list of homologs, a stronger bit-score cut-off should be considered. However, if it is possible that your ingroup list of sequences may not represent the full diversity of the family, then there could also be a case to keep these sequences, especially if they pass additional tests following the pipeline. In the case of GMPipe benchmarking, I retained these sequences to get a more accurate estimation of the false positive rate. 
 
 
