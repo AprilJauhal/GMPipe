@@ -133,6 +133,7 @@ While optional for this particular step, GMPipe scripts are designed to run in t
     GMPipe is designed to cast as wide of a net as possible, while providing specificity through phylogenetic comparisions with representative ingroup and outgroup sequences. This is based on the philosophy that it is easier to add additional filtering steps to narrow a screen, but difficult to make a screeen more broad after it has been run.  
     
     A simple strategy is to align your sequences to a known reference sequence, and check whether there are any ambiguous residues or gaps in the most conserved motifs in the protein.  An advantage of this strategy is that it requires no a priori knowledge of which mutations will or won't inactivate the protein. For Olfactory Receptors this may include the following motifs for example:
+    
     * GN
     * MAYDRYVAIC
     * KAFTCASH
@@ -143,6 +144,7 @@ Additional notes:
 Theoretically the two main scripts (how to run steps 3-4) can be run together through a master script, although the logistics of this may depend on your job scheduler. However, in my experience running the jobs as separate commands makes it easier to figure out if/where a step has stalled. 
 
 Troubleshooting:
+
     * If the snakemake job is still running but not generating additional jobs, end and restart the job
     * GMPipe is designed to stop prematurely if ingroup and outgroup sequences are too similar. If this happens, check the log file for errors such as "ERROR: INGROUP AND OUTGROUP HMMER BIT SCORES TOO SIMILAR", if this occurs, check and redesign outgroup.fa, ingroup.fa and master_seq.fa sequences. Make sure outgroup sequences are phyllogenetically distinct from ingroup sequences. The master_seq.fa sequences should represent a subset of ingroup sequences.  
     * Ensure that the "snakemake" file is in the same folder that the commands are being called from (which is not necessarily the same directory where the analysis is done). This file can be duplicated and placed into individual directories for each run but should not be edited. 
