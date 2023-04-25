@@ -97,7 +97,7 @@ While optional for this particular step, GMPipe scripts are designed to run in t
     `$ bash [path_to]/GMPipe/Scripts/GMPipe_start.sh [path_to]/GMPipeline_userinput.ctl`
 
 4) Running Snakemake:  
-    _This step generates and parses trees for each query sequence with ingroup_reps.fa and outgroups.fa sequences_  
+    _This step generates and parses trees for each query sequence with ingroup_reps.fa and outgroups.fa sequences and generates output files_  
     
     IMPORTANT: this step must be called from the same directory as the "Snakefile" in the GMPipe directory. The "directory" below refers to the working directory that you selected in GMPipeline_userinput.ctl
 
@@ -115,17 +115,8 @@ While optional for this particular step, GMPipe scripts are designed to run in t
     The "--jobs" flag for Snakemake allows you to set the number of single threaded batch jobs that Snakemake submits to your cluster at a single time.  The larger the number, the faster it will run. If you have space availiable on your cluster. The more jobs you submit at a time, the faster this step will proceed.
  
     NOTE: This step often stalls when it is nearly complete (due to Snakemake thinking that all of the jobs have completed due to rounding errors). If the main snakemake job is still running but not submitting more jobs, it may have stalled. If this happens, cancel and resubmit the main Snakemake job (it will resubmit the required jobs without needing to redo previous steps). 
-
-5) Running GMPipe_results.sh:  
-    _This step sorts, compiles, and analyzes results_  
     
-    This script is designed to be submitted to a job scheduler. Be sure to specify the same number of threads as speciied in the GMPipeline_userinput.ctl file. 
-While optional for this particular step, GMPipe scripts are designed to run in the same directory as the Snakefile.
-
-    To run:
-    `$ bash [path_to]/GMPipe/Scripts/GMPipe_results.sh [path_to]/GMPipeline_userinput.ctl`
-    
-6) Manual checks:  
+5) Manual checks:  
 
     In the out folder, find the names of the sequences flagged as "undetermined" from the following files:
     * undet_by_constraint.fa (sequences flagged based on tree statistics)
@@ -137,7 +128,7 @@ While optional for this particular step, GMPipe scripts are designed to run in t
         2) Clear separation of tree-passing and tree-failing sequences (If you consistently observe sequences with high bit scores that failed the tree test, this could be a sign that the ingroup HMM profile is not specific enough to your family of interest)
         3) Clear separation of outgroup and tree-passing sequences. (The default bit-score cut-off is the value of the highest-scoring outgroup sequence. If you would like to select a more stringent cut-off after viewing the histogram results you can filter the FINAL_RESULTS.txt file based on the bit-score).
 
-7) Reccomended additional steps:  
+6) Reccomended additional steps:  
 
     GMPipe is designed to cast as wide of a net as possible, while providing specificity through phylogenetic comparisions with representative ingroup and outgroup sequences. This is based on the philosophy that it is easier to add additional filtering steps to narrow a screen, but difficult to make a screeen more broad after it has been run.  
     
@@ -149,7 +140,7 @@ While optional for this particular step, GMPipe scripts are designed to run in t
     For Olfactory Receptors, including both the GN and PMLNPFIY motifs can also be used to define a "full-length" sequence, as these motifs are found on TM1 and TM7, respectively.  
 
 Additional notes:  
-Theoretically the three main scripts (how to run steps 3-5) can be run together through a master script, although the logistics of this may depend on your job scheduler. However, in my experience running the jobs as separate commands makes it easier to figure out if/where a step has stalled. 
+Theoretically the two main scripts (how to run steps 3-4) can be run together through a master script, although the logistics of this may depend on your job scheduler. However, in my experience running the jobs as separate commands makes it easier to figure out if/where a step has stalled. 
 
 Troubleshooting:
     * If the snakemake job is still running but not generating additional jobs, end and restart the job
