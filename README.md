@@ -94,9 +94,7 @@ GMPipe is a gene mining pipeline designed to maximize the identification of mult
 While optional for this particular step, GMPipe scripts are designed to run in the same directory as the Snakefile.
 
     To run:  
-    ```
-    $ bash [path_to]/GMPipe/Scripts/GMPipe_start.sh [path_to]/GMPipeline_userinput.ctl
-    ```
+    `$ bash [path_to]/GMPipe/Scripts/GMPipe_start.sh [path_to]/GMPipeline_userinput.ctl`
 
 4) Running Snakemake:  
     _This step generates and parses trees for each query sequence with ingroup_reps.fa and outgroups.fa sequences_  
@@ -125,9 +123,7 @@ While optional for this particular step, GMPipe scripts are designed to run in t
 While optional for this particular step, GMPipe scripts are designed to run in the same directory as the Snakefile.
 
     To run:
-    ```
-    $ bash [path_to]/GMPipe/Scripts/GMPipe_results.sh [path_to]/GMPipeline_userinput.ctl
-    ```
+    `$ bash [path_to]/GMPipe/Scripts/GMPipe_results.sh [path_to]/GMPipeline_userinput.ctl`
     
 6) Manual checks:  
 
