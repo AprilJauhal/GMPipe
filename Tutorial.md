@@ -42,12 +42,12 @@ $ bash Scripts/GMPipe_start.sh tutorial/GMPipeline_userinput.ctl
 To run with OpenLava (assuming 20 threads set in control file): 
 ```
 $ bsub -J GM_start -n 20 -o tutorial/logs/start.stdout -e tutorial/logs/start.stderr' \
-$ "bash Scripts/GMPipe_start.sh tutorial/GMPipeline_userinput.ctl"
+"bash Scripts/GMPipe_start.sh tutorial/GMPipeline_userinput.ctl"
 ```
 To run with slurm (assuming 2 days wall-time allotment, but the script should take less than a few hours):
 ```
 $ sbatch --job-name=GMstart-test --cpus-per-task=20 --nodes=1 --mem=1000 --time=02-00:00:00 --output="tutorial/logs/GMstart.%j.out" \
-$ --wrap="bash Scripts/GMPipe_start.sh tutorial/GMPipeline_userinput.ctl"
+--wrap="bash Scripts/GMPipe_start.sh tutorial/GMPipeline_userinput.ctl"
 ```
 
 After running, there should be a "storage" folder, which should have the following contents:
@@ -86,15 +86,15 @@ $ snakemake --directory [directory] --jobs [max jobs Snakemake submits at once] 
 To run with openlava:
 ```
 $ bsub -J GM_snake -n 1 -o tutorial/logs/GM_snake.stdout -e tutorial/logs/GM_snake.stderr' \
-$ "snakemake --directory [directory] --jobs [max jobs Snakemake submits at once] --wait-for-files -w 500 \
-$ --cluster 'bsub -J snakemake -n 1 -o Pipe_snakemake.stdout -e Pipe_snakemake.stderr'"
+"snakemake --directory [directory] --jobs [max jobs Snakemake submits at once] --wait-for-files -w 500 \
+--cluster 'bsub -J snakemake -n 1 -o Pipe_snakemake.stdout -e Pipe_snakemake.stderr'"
 ```
 To run with slurm (run time will vary based on number of threads, but 10 days is a highly conservative estimate):
 ```
 $ sbatch --job-name=GM_snake --cpus-per-task=1 --nodes=1 --mem=1000 --time=10-00:00:00 --output="tutorial/logs/GMsnake.%j.out" \
-$ --wrap="snakemake --directory [directory] --jobs [max jobs Snakemake submits at once] --wait-for-files -w 500 \
-$ --cluster "sbatch -J zebra-snake_11 -c 1 -N 1 --mem 1000 --time 1-00:00:00 --output \ 
-$ '/powerplant/workspace/hraaxe/GMPipe_2022/test_zebrafish_GRCz11/logs/snake_subjob.%j.out'"
+--wrap="snakemake --directory [directory] --jobs [max jobs Snakemake submits at once] --wait-for-files -w 500 \
+--cluster "sbatch -J zebra-snake_11 -c 1 -N 1 --mem 1000 --time 1-00:00:00 --output \ 
+'/powerplant/workspace/hraaxe/GMPipe_2022/test_zebrafish_GRCz11/logs/snake_subjob.%j.out'"
 ```
 Once this part has finished running, there should be an out folder that contains a variety of files, including "PASSING_SEQUENCES.fa" and assuming that you used the example files or extracted ORFs using the GMfind_intronless_orfs.sh and that all the R libraries loaded properly, there should also be file called "bitscore_hist.png" that contains a histogram which can be used to check if the cutoff score used was appropriate. 
 
@@ -123,10 +123,10 @@ If most of the files mentioned above are present (some may be absent if they wer
 I highly reccomend examining the unconstrained trees for the undetermined sequences. (Note that these sequences are not included in PASSING_SEQUENCES.fa and if they pass manual inspection you will need to generate a combined list yourself). Essentially, you want to make sure that the hits clustered with ingroups as opposed to outgroups. The constrained trees are easier to automatically parse but may not represent the highest scoring solution, so it is a good idea to manually inspect the unconstrained trees that are flagged. If hits cluster with ingroups instead of outroups for at least 9 out of 10 trees, you can count them as passing sequences. You can identify the paths to the unconstrained trees with the following code:
 ```
     $ undet_hits=($( grep ">" tutorial/out/MLtree_undet_sequences.fa | sed 's/>//g' ))
-    $ for undet_hit in "${undet_hits[@]}"
-    $ do
-        $ ls tutorial/storage/ML/${undet_hit}/${undet_hit}_unconstr**.iqtree
-    $ done
+    > for undet_hit in "${undet_hits[@]}"
+    > do
+    > ls tutorial/storage/ML/${undet_hit}/${undet_hit}_unconstr**.iqtree
+    > done
 ```
 
 Ideally, you should also check the histogram file to see if there was appropriate separation of ingroup and outgroup sequences. The graph on the top has all hmmer-hit scores as well as the outgroup and master_seq (ingroup) scores, and the graph on the bottom is the same but lacks the tree-passing scores for ease of clarity. The most important thing to check for is that there is a large gap between the ingroup and outgroup sequences. In the tutorial example, there is a large gap. However, if there wasn't it would be a sign that the GMPipe input sequences might need adjusting in order to minimize false positives and negatives. If this is the case, make sure that the outgroup sequnces are phyllogenetically distinct from the ingroup sequences. This could happen if the ingroup is technically a subgroup fo teh outgroups and lacks
