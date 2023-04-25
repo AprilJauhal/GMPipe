@@ -77,9 +77,7 @@ GMPipe is a gene mining pipeline designed to maximize the identification of mult
     OPTION 1): Identifying intronless ORFs in a genome
 
     To run:  
-    ```
-    $ bash [path_to]/GMPipe/Scripts/GMfind_intronless_orfs.sh [path_to]/GMPipeline_userinput.ctl
-    ```
+    `$ bash [path_to]/GMPipe/Scripts/GMfind_intronless_orfs.sh [path_to]/GMPipeline_userinput.ctl`
     
     Note that this method will not identify: pseudogenes, fragmented genes, genes with introns
     
