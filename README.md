@@ -14,7 +14,7 @@ GMPipe is a gene mining pipeline designed to maximize the identification of mult
     * MUSCLE (version 3.8.1551)
     * HMMER (version 3.1b2)
     * IQTREE (version 1.6.11) 
-    * R (version 3.6.1; 4.0.0 should work too); packages: 
+    * R (version 4.0.0); packages: 
         * Biostrings
         * stringr
         * dplyr
