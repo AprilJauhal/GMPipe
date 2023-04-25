@@ -77,7 +77,9 @@ GMPipe is a gene mining pipeline designed to maximize the identification of mult
     OPTION 1): Identifying intronless ORFs in a genome
 
     To run:  
+    ```
     $ bash [path_to]/GMPipe/Scripts/GMfind_intronless_orfs.sh [path_to]/GMPipeline_userinput.ctl
+    ```
     
     Note that this method will not identify: pseudogenes, fragmented genes, genes with introns
     
@@ -94,7 +96,9 @@ GMPipe is a gene mining pipeline designed to maximize the identification of mult
 While optional for this particular step, GMPipe scripts are designed to run in the same directory as the Snakefile.
 
     To run:  
+    ```
     $ bash [path_to]/GMPipe/Scripts/GMPipe_start.sh [path_to]/GMPipeline_userinput.ctl
+    ```
 
 4) Running Snakemake:  
     _This step generates and parses trees for each query sequence with ingroup_reps.fa and outgroups.fa sequences_  
@@ -102,9 +106,11 @@ While optional for this particular step, GMPipe scripts are designed to run in t
     IMPORTANT: this step must be called from the same directory as the "Snakefile" in the GMPipe directory. The "directory" below refers to the working directory that you selected in GMPipeline_userinput.ctl
 
     To run:  
+    ```
     $ conda activate snakemake  
     $ snakemake --unlock --directory [directory]  
     $ snakemake --directory [directory] --jobs [max jobs Snakemake submits at once] --wait-for-files -w 500 --cluster [cluster commands here]
+    ```
  
     Cluster commands just need to be simple single-threaded jobs, however, all elements required to submit a job to your cluster need to be included in this line. For ease of troubleshooting, please pick a different job name than you use for the snakemake command above.  
     Example of cluster commands for OpenLava:  
@@ -121,8 +127,10 @@ While optional for this particular step, GMPipe scripts are designed to run in t
 While optional for this particular step, GMPipe scripts are designed to run in the same directory as the Snakefile.
 
     To run:
+    ```
     $ bash [path_to]/GMPipe/Scripts/GMPipe_results.sh [path_to]/GMPipeline_userinput.ctl
-
+    ```
+    
 6) Manual checks:  
 
     In the out folder, find the names of the sequences flagged as "undetermined" from the following files:
