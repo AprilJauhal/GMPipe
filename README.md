@@ -2,7 +2,7 @@
 
 ## What is GMPipe?
 
-GMPipe is a gene mining pipeline designed to maximize the identification of multicopy gene family homologs in genome assemblies (for intronless genes) or lists of protein sequences. GMPipe has been validated for mining olfactory receptor genes from Eukaryotic genomes. This algorithm uses custom ingroup and outgroup sequence lists to distinguish between members of a gene family of interest from close off-target relatives. Overall, GMPipe uses HMMER as an initial screening step, paired with phylogenetic clustering to test whether passing sequences are more closly related to "ingroup" than "outgroup" sequences. The result is a pipeline with a low false negative rate, with minimal impact on the false positive rate, especially when paired with additional family-specific filtering steps.  
+GMPipe is a gene mining pipeline designed to maximize the identification of multicopy gene family homologs in genome assemblies (for intronless genes) or lists of protein sequences. GMPipe has been validated for mining olfactory receptor genes from vertebrate genomes. This algorithm uses custom ingroup and outgroup sequence lists to distinguish between members of a gene family of interest from close off-target relatives. Overall, GMPipe uses HMMER as an initial screening step, paired with phylogenetic clustering to test whether passing sequences are more closly related to "ingroup" than "outgroup" sequences. The result is a pipeline with a low false negative rate, with minimal impact on the false positive rate, especially when paired with additional family-specific filtering steps.  
 
 ## Before running GMPipe:  
 1) Using a job scheduler:   
