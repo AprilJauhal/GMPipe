@@ -38,15 +38,20 @@ This is the initialization script for GMPipe. It generates a HMMER profile for i
 To run: 
 ```
 $ bash Scripts/GMPipe_start.sh tutorial/GMPipeline_userinput.ctl
+```
 To run with OpenLava (assuming 20 threads set in control file): 
+```
 $ bsub -J GM_start -n 20 -o tutorial/logs/start.stdout -e tutorial/logs/start.stderr' \
 $ "bash Scripts/GMPipe_start.sh tutorial/GMPipeline_userinput.ctl"
+```
 To run with slurm (assuming 2 days wall-time allotment, but the script should take less than a few hours):
+```
 $ sbatch --job-name=GMstart-test --cpus-per-task=20 --nodes=1 --mem=1000 --time=02-00:00:00 --output="tutorial/logs/GMstart.%j.out" \
 $ --wrap="bash Scripts/GMPipe_start.sh tutorial/GMPipeline_userinput.ctl"
 ```
 
 After running, there should be a "storage" folder, which should have the following contents:
+
     * HMMER_FAIL.fa   
     * HMMER_PASS.fa   
     * master_seq.afa  
@@ -73,13 +78,19 @@ $ module load conda
 $ conda activate snakemake
 $ conda activate snakemake  
 $ snakemake --unlock --directory [directory]  
+```
 To run (base command): 
+```
 $ snakemake --directory [directory] --jobs [max jobs Snakemake submits at once] --wait-for-files -w 500 --cluster [cluster commands here]
+```
 To run with openlava:
+```
 $ bsub -J GM_snake -n 1 -o tutorial/logs/GM_snake.stdout -e tutorial/logs/GM_snake.stderr' \
 $ "snakemake --directory [directory] --jobs [max jobs Snakemake submits at once] --wait-for-files -w 500 \
 $ --cluster 'bsub -J snakemake -n 1 -o Pipe_snakemake.stdout -e Pipe_snakemake.stderr'"
+```
 To run with slurm (run time will vary based on number of threads, but 10 days is a highly conservative estimate):
+```
 $ sbatch --job-name=GM_snake --cpus-per-task=1 --nodes=1 --mem=1000 --time=10-00:00:00 --output="tutorial/logs/GMsnake.%j.out" \
 $ --wrap="snakemake --directory [directory] --jobs [max jobs Snakemake submits at once] --wait-for-files -w 500 \
 $ --cluster "sbatch -J zebra-snake_11 -c 1 -N 1 --mem 1000 --time 1-00:00:00 --output \ 
@@ -93,7 +104,7 @@ STEP 4) Data examination and follow-up
 
 In the output folder there should be the following files: 
 
-PASSING_SEQUENCES.fa = Sequences that passed both tests with no issues (but should still be aligned and manually inspected in another program)
+    * PASSING_SEQUENCES.fa = Sequences that passed both tests with no issues (but should still be aligned and manually inspected in another program)
     * MLtree_fail_sequences.fa = Sequences that failed due to clustering with outgroup sequences instead of ingroup sequences  
     * MLtree_undet_sequences.fa  = All sequences that were flagged for manual inspection  
     * undet_by_constraint.fa = Sequences flagged for inspection specifically based on not consistently grouping with outgroups 
