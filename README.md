@@ -141,7 +141,7 @@ While optional for this particular step, GMPipe scripts are designed to run in t
     For Olfactory Receptors, including both the GN and PMLNPFIY motifs can also be used to define a "full-length" sequence, as these motifs are found on TM1 and TM7, respectively.  
 
 Additional notes:  
-Theoretically the two main scripts (how to run steps 3-4) can be run together through a master script, although the logistics of this may depend on your job scheduler. However, in my experience running the jobs as separate commands makes it easier to figure out if/where a step has stalled. GMPipe_start.sh and the snakemake pipeline are both restartable.
+Theoretically the two main scripts (how to run steps 3-4) can be run together through a master script, although the logistics of this may depend on your job scheduler. However, in my experience running the jobs as separate commands makes it easier to figure out if/where a step has stalled. Finally, both GMPipe_start.sh and the snakemake pipeline are restartable if interrupted.
 
 Troubleshooting:
 
