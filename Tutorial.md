@@ -52,16 +52,16 @@ $ --wrap="bash Scripts/GMPipe_start.sh tutorial/GMPipeline_userinput.ctl"
 
 After running, there should be a "storage" folder, which should have the following contents:
 
-    * HMMER_FAIL.fa   
-    * HMMER_PASS.fa   
-    * master_seq.afa  
-    * outgroups.afa
-    * reference.afa
-    * query_seq.hmm
-    * query_seq.afa
-    * opt_ML/
-    * ML/
-    * hmm/ (if troubleshooting, make sure this contains a "bit_cutoff.txt" file)
+* HMMER_FAIL.fa   
+* HMMER_PASS.fa   
+* master_seq.afa  
+* outgroups.afa
+* reference.afa
+* query_seq.hmm
+* query_seq.afa
+* opt_ML/
+* ML/
+* hmm/ (if troubleshooting, make sure this contains a "bit_cutoff.txt" file)
     
 If any of these sequences are missing, check the log. 
 
@@ -104,15 +104,15 @@ STEP 4) Data examination and follow-up
 
 In the output folder there should be the following files: 
 
-    * PASSING_SEQUENCES.fa = Sequences that passed both tests with no issues (but should still be aligned and manually inspected in another program)
-    * MLtree_fail_sequences.fa = Sequences that failed due to clustering with outgroup sequences instead of ingroup sequences  
-    * MLtree_undet_sequences.fa  = All sequences that were flagged for manual inspection  
-    * undet_by_constraint.fa = Sequences flagged for inspection specifically based on not consistently grouping with outgroups 
-    * undet_by_tree.fa = Sequences flagged for inspection specifically based on constrained trees not consistently passing tree tests (pAU)
-    * outgroup_bitscores.txt = set of all bit_scores from outgroup sequences
-    * ingroup_bitscores.txt = set of all bit_scores from master_seq sequences
-    * passing_hit.tbl = hmmer table report of passing hits
-    * domain/ = directory containing hmmer domain out tables for hits, outgroups, and master_seq sequences (for those interested in hmmer details)
+* PASSING_SEQUENCES.fa = Sequences that passed both tests with no issues (but should still be aligned and manually inspected in another program)
+* MLtree_fail_sequences.fa = Sequences that failed due to clustering with outgroup sequences instead of ingroup sequences  
+* MLtree_undet_sequences.fa  = All sequences that were flagged for manual inspection  
+* undet_by_constraint.fa = Sequences flagged for inspection specifically based on not consistently grouping with outgroups 
+* undet_by_tree.fa = Sequences flagged for inspection specifically based on constrained trees not consistently passing tree tests (pAU)
+* outgroup_bitscores.txt = set of all bit_scores from outgroup sequences
+* ingroup_bitscores.txt = set of all bit_scores from master_seq sequences
+* passing_hit.tbl = hmmer table report of passing hits
+* domain/ = directory containing hmmer domain out tables for hits, outgroups, and master_seq sequences (for those interested in hmmer details)
 
 These files may also appear if an ORF record was included in the input folder
     * FINAL_REPORT.txt = Report of all hmmer-passing ORFs. Shows their nucleotide and amino acid sequences, scaffold accession number and position, bit-score and outcome of hmmer and tree tests. 
