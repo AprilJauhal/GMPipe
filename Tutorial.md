@@ -5,29 +5,30 @@ This is a basic tutorial for GMPipe. This can be used to preview the program and
 
 ## Step 1) Setting the control file
 Each run should have its own GMPipeline_userinput.ctl file. Please keep the filename the same, but edit the file contents to fit your parameters. Here is an example file below:
-    >#Set minimum ORF length (AA)  
-    >ORF_SIZE=250 # Minimum ORF size-cutoff threshold; default for Olfactory Receptors (only applies to GMfind_intronless_orfs.sh script)  
-    >#Full path to query genome  
-    >QUERY_GENOME=[path_to/query_genome.fasta] #(only applies to GMfind_intronless_orfs.sh script)  
-    >
-    >#Set max threads (for GMPipe_start.sh), recommendation: between 1 and 20 threads  
-    >THREADS=20  
-    >
-    >#Path to output folder (containing this file)  
-    >PIPE_PATH=[path_to/run_name] # Custom directory for your GMPipe run, directory needs to exist before running script  
-    >#Path to GMPipe/Scripts folder  
-    >SCRIPT_PATH=[path_to]/GMPipe/Scripts  
-    >
-    >#Full paths to dependencies
-    >MUSCLE=[path to/muscle-3.8.1551/bin/muscle]  
-    >HMMER=[path to/hmmer-3.1b2-linux-intel-x86_64]  
-    >IQTREE=[path to/iqtree-1.6.11/bin/iqtree]  
-    >
-    >#Load R module below, if necessary [Example: module load R/3.6.1]:
-    > 
+```
+    #Set minimum ORF length (AA)  
+    ORF_SIZE=250 # Minimum ORF size-cutoff threshold; default for Olfactory Receptors (only applies to GMfind_intronless_orfs.sh script)  
+    #Full path to query genome  
+    QUERY_GENOME=[path_to/query_genome.fasta] #(only applies to GMfind_intronless_orfs.sh script)  
+    
+    #Set max threads (for GMPipe_start.sh), recommendation: between 1 and 20 threads  
+    THREADS=20  
+    
+    #Path to output folder (containing this file)  
+    PIPE_PATH=[path_to/run_name] # Custom directory for your GMPipe run, directory needs to exist before running script  
+    #Path to GMPipe/Scripts folder  
+    SCRIPT_PATH=[path_to]/GMPipe/Scripts  
+    
+    #Full paths to dependencies
+    MUSCLE=[path to/muscle-3.8.1551/bin/muscle]  
+    HMMER=[path to/hmmer-3.1b2-linux-intel-x86_64]  
+    IQTREE=[path to/iqtree-1.6.11/bin/iqtree]  
+    
+    #Load R module below, if necessary [Example: module load R/3.6.1]:
+```     
 The first two parameters are specific to the GMfind_intronless_orfs.sh script. The ORF_SIZE parameter refers to the minimum ORF size cutoff (AA) for mining ORFs from the genome. The reccomended length for olfactory receptors is 250bp but this can be adjusted if desired. The QUERY_GENOME path is the path to the genome used for ORF extraction.  
 
-Next, we can set the maximum number of threads to be used for GMPipe_start.sh (and GMfind_intronless_orfs.sh). 20 threads is a good starting point if availiable; the threads make a bigger difference for the snakemake pipeline and are set separately. We also set the paths to the directory where the pipeine will be run (should contain the "in" folder), as well as the path to find the GMPipe scripts (the snakemake is kept separately--in the same directory where the run is executed from). 
+Next, we can set the maximum number of threads to be used for GMPipe_start.sh. 20 threads is a good starting point if availiable; the threads make a bigger difference for the snakemake pipeline and are set separately. We also set the paths to the directory where the pipeine will be run (should contain the "in" folder), as well as the path to find the GMPipe scripts (the snakemake is kept separately--in the same directory where the run is executed from). 
 
 Here we can also set the full paths to the dependencies, and if necessary, you can load an R module here. 
 
@@ -35,13 +36,15 @@ Here we can also set the full paths to the dependencies, and if necessary, you c
 This is the initialization script for GMPipe. It generates a HMMER profile for ingroup sequences, generates a bit-score cutoff value based on outgroup sequence scores, and determines the IQTREE substitution model for use in the main pipeline. We are going to assume you are running the tutorial example. The command to run the pipeline is written below and assumes you are executing it from the "GMPipe" directory. However, it is reccomended to execute this command as an HPC job, and some examples are also listed below:
 
 To run: 
-> $ bash Scripts/GMPipe_start.sh tutorial/GMPipeline_userinput.ctl
+```
+$ bash Scripts/GMPipe_start.sh tutorial/GMPipeline_userinput.ctl
 To run with OpenLava (assuming 20 threads set in control file): 
-> $ bsub -J GM_start -n 20 -o tutorial/logs/start.stdout -e tutorial/logs/start.stderr' \
-> $ "bash Scripts/GMPipe_start.sh tutorial/GMPipeline_userinput.ctl"
+$ bsub -J GM_start -n 20 -o tutorial/logs/start.stdout -e tutorial/logs/start.stderr' \
+$ "bash Scripts/GMPipe_start.sh tutorial/GMPipeline_userinput.ctl"
 To run with slurm (assuming 2 days wall-time allotment, but the script should take less than a few hours):
-> $ sbatch --job-name=GMstart-test --cpus-per-task=20 --nodes=1 --mem=1000 --time=02-00:00:00 --output="tutorial/logs/GMstart.%j.out" \
-> $ --wrap="bash Scripts/GMPipe_start.sh tutorial/GMPipeline_userinput.ctl"
+$ sbatch --job-name=GMstart-test --cpus-per-task=20 --nodes=1 --mem=1000 --time=02-00:00:00 --output="tutorial/logs/GMstart.%j.out" \
+$ --wrap="bash Scripts/GMPipe_start.sh tutorial/GMPipeline_userinput.ctl"
+```
 
 After running, there should be a "storage" folder, which should have the following contents:
     * HMMER_FAIL.fa   
@@ -65,20 +68,23 @@ This snakemake pipeline executes as a single-threaded command that calls additio
 Note that when selecting wall time for a slurm command, both the initialization script and snakemake pipelines are restartable if interrupted. Conservative wall times are more convenient but not strictly necessary.
 
 To prepare to run (assuming snakemake is installed as a module):  
-> $ module load conda
-> $ conda activate snakemake
-> $ conda activate snakemake  
-> $ snakemake --unlock --directory [directory]  
+```
+$ module load conda
+$ conda activate snakemake
+$ conda activate snakemake  
+$ snakemake --unlock --directory [directory]  
 To run (base command): 
-> $ snakemake --directory [directory] --jobs [max jobs Snakemake submits at once] --wait-for-files -w 500 --cluster [cluster commands here]
+$ snakemake --directory [directory] --jobs [max jobs Snakemake submits at once] --wait-for-files -w 500 --cluster [cluster commands here]
 To run with openlava:
-> $ bsub -J GM_snake -n 1 -o tutorial/logs/GM_snake.stdout -e tutorial/logs/GM_snake.stderr' \
-> $ "snakemake --directory [directory] --jobs [max jobs Snakemake submits at once] --wait-for-files -w 500 \
-> $ --cluster 'bsub -J snakemake -n 1 -o Pipe_snakemake.stdout -e Pipe_snakemake.stderr'"
+$ bsub -J GM_snake -n 1 -o tutorial/logs/GM_snake.stdout -e tutorial/logs/GM_snake.stderr' \
+$ "snakemake --directory [directory] --jobs [max jobs Snakemake submits at once] --wait-for-files -w 500 \
+$ --cluster 'bsub -J snakemake -n 1 -o Pipe_snakemake.stdout -e Pipe_snakemake.stderr'"
 To run with slurm (run time will vary based on number of threads, but 10 days is a highly conservative estimate):
-> $ sbatch --job-name=GM_snake --cpus-per-task=1 --nodes=1 --mem=1000 --time=10-00:00:00 --output="tutorial/logs/GMsnake.%j.out" \
-> $ --wrap="snakemake --directory [directory] --jobs [max jobs Snakemake submits at once] --wait-for-files -w 500 \
-> $ --cluster "sbatch -J zebra-snake_11 -c 1 -N 1 --mem 1000 --time 1-00:00:00 --output '/powerplant/workspace/hraaxe/GMPipe_2022/test_zebrafish_GRCz11/logs/snake_subjob.%j.out'"
+$ sbatch --job-name=GM_snake --cpus-per-task=1 --nodes=1 --mem=1000 --time=10-00:00:00 --output="tutorial/logs/GMsnake.%j.out" \
+$ --wrap="snakemake --directory [directory] --jobs [max jobs Snakemake submits at once] --wait-for-files -w 500 \
+$ --cluster "sbatch -J zebra-snake_11 -c 1 -N 1 --mem 1000 --time 1-00:00:00 --output \ 
+$ '/powerplant/workspace/hraaxe/GMPipe_2022/test_zebrafish_GRCz11/logs/snake_subjob.%j.out'"
+```
 Once this part has finished running, there should be an out folder that contains a variety of files, including "PASSING_SEQUENCES.fa" and assuming that you used the example files or extracted ORFs using the GMfind_intronless_orfs.sh and that all the R libraries loaded properly, there should also be file called "bitscore_hist.png" that contains a histogram which can be used to check if the cutoff score used was appropriate. 
 
 If these files do not appear, check if the snakemake job is still running. If it is the only job running it may have stalled. Cancel the job and restart. If this still does not work, check the logs for the main snakemake job for clues. If the pipeline has successfully completed, it should say that it has completed job "0".
@@ -103,7 +109,14 @@ These files may also appear if an ORF record was included in the input folder
 
 If most of the files mentioned above are present (some may be absent if they were empty but check to ensure PASSING_SEQUENCES.fa is present), the next step is to examine some of the output files. 
 
-I highly reccomend examining the unconstrained trees for the undetermined sequences. (Note that these sequences are not included in PASSING_SEQUENCES.fa and if they pass manual inspection you will need to generate a combined list yourself). 
+I highly reccomend examining the unconstrained trees for the undetermined sequences. (Note that these sequences are not included in PASSING_SEQUENCES.fa and if they pass manual inspection you will need to generate a combined list yourself). Essentially, you want to make sure that the hits clustered with ingroups as opposed to outgroups. The constrained trees are easier to automatically parse but may not represent the highest scoring solution, so it is a good idea to manually inspect the unconstrained trees that are flagged. If hits cluster with ingroups instead of outroups for at least 9 out of 10 trees, you can count them as passing sequences. You can identify the paths to the unconstrained trees with the following code:
+```
+    $ undet_hits=($( grep ">" test_zebrafish/out/MLtree_undet_sequences.fa | sed 's/>//g' ))
+    $ for undet_hit in "${undet_hits[@]}"
+    $ do
+        $ ls test_zebrafish/storage/ML/${undet_hit}/${undet_hit}_unconstr**.iqtree
+    $ done
+```
 
 Ideally, you should also check the histogram file to see if there was appropriate separation of ingroup and outgroup sequences. The graph on the top has all hmmer-hit scores as well as the outgroup and master_seq (ingroup) scores, and the graph on the bottom is the same but lacks the tree-passing scores for ease of clarity. The most important thing to check for is that there is a large gap between the ingroup and outgroup sequences. In the tutorial example, there is a large gap. However, if there wasn't it would be a sign that the GMPipe input sequences might need adjusting in order to minimize false positives and negatives. If this is the case, make sure that the outgroup sequnces are phyllogenetically distinct from the ingroup sequences. This could happen if the ingroup is technically a subgroup fo teh outgroups and lacks
 distinct features or motifs, in which case, you might need to rethink whether separation is possible without setting a high bits-core cut-off. You may also want to consider retroactively raising the bit-score cut-off if there is poor separation between outgroupand tree-passing sequences, depending on the goals of your analysis. The tutorial example is a borderline case. If the goal is obtaining a stringent list of homologs, a stronger bit-score cut-off should be considered. However, if it is possible that your ingroup list of sequences may not represent the full diversity of the family, then there could also be a case to keep these sequences, especially if they pass additional tests following the pipeline. In the case of GMPipe benchmarking, I retained these sequences to get a more accurate estimation of the false positive rate. 
