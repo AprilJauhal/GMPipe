@@ -1,11 +1,11 @@
 #!/bin/bash
 
-## Please run GMfind_intronless_orfs.bat first to populate Pipe/in with ORF_list.fa and ORF_record.txt for your genome of interest
+## Please run GMfind_intronless_orfs.sh first to populate Pipe/in with ORF_list.fa and ORF_record.txt for your genome of interest
 ## Please edit the GMfind_userinput.ctl file to adjust parameters and file locations before running
-## Please add the following files to Pipe/in/: ingroup_reps.fa, outgroups.fa, ingroups.fa
-##    ingroups.fa: fasta-formatted list of "ingroup" sequences
+## Please add the following files to Pipe/in/: master_seq.fa, outgroups.fa, query_seq.fa
+##    query_seq.fa: fasta-formatted list of "ingroup" sequences
 ##    outgroups.fa: fasta-formatted list of known "outgroup" sequences
-##    ingroup_reps.fa: diverse subset of sequences from ingroups.fa including a representatitive from each major subfamily in your ingroup
+##    master_seq.fa: diverse subset of sequences from query_seqs.fa including a representatitive from each major subfamily in your ingroup
 
 ## To run:
 ## $ bash path_to/GMPipe/Scripts/GMPipe_results.sh path_to/GMPipeline_userinput.ctl

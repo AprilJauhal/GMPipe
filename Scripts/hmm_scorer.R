@@ -1,9 +1,12 @@
 # To run: Rscript path_to/hmm_scorer.R PIPE_PATH
 # where PIPE_PATH is directory containing "storage", and "in" folders for executing GMPipeline 
 # Not designed to be run on its own
+# Purpose is to identify and prepare hmmer-passing sequences for further analysis
 
 library(stringr)
+library(Biostrings)
 
+# Setting filepaths
 PIPE_PATH <- commandArgs(trailingOnly=TRUE)[1] 
 ORF_path <- paste0(PIPE_PATH, "/in/ORF_list.fa")
 ORF_record_path <- paste0(PIPE_PATH, "/in/ORF_record.txt")
@@ -13,59 +16,46 @@ miss_list_path <- paste0(PIPE_PATH, "/storage/HMMER_FAIL.fa")
 hit_dir_path <- paste0(PIPE_PATH, "/storage/hmm/pass/")
 cutoff_path <- paste0(PIPE_PATH, "/storage/hmm/bit_cutoff.txt")
 hit_tblout_path <-paste0(PIPE_PATH, "/storage/hmm/hit.tblout")
-
-cutoff <- as.numeric(str_remove_all(readLines(cutoff_path), "[A-Z]+="))
-ORF_record <- read.table(ORF_record_path, header = TRUE)
-
-# parsing hmmsearch results for each ORF seqeuences vs. ingroup HMM profile
 hit_tbl_path <-paste0(PIPE_PATH, "/storage/hmm/hit.tbl")
-hit_tblout <- readLines(hit_tblout_path)[-1]
-hit_tblout[1] <- str_remove(hit_tblout[1], "# ")
-hit_tblout <- hit_tblout[-2]
-hit_tblout <- hit_tblout[-grep("#", hit_tblout)]
-hit_tblout[1] <- str_replace(hit_tblout[1], "target name", "target_name")
-hit_tblout[1] <- str_replace(hit_tblout[1], "query name", "query_name")
-hit_tblout[1] <- str_replace(hit_tblout[1], "description of target", "description_of_target")
-write(hit_tblout, ncolumns = 1, file = hit_tbl_path)
-hit_tbl <- read.table(hit_tbl_path, header = TRUE)
 
+# Reading cutoff value
+cutoff <- as.numeric(str_remove_all(readLines(cutoff_path), "[A-Z]+="))
+
+# Reading ORF fasta list
+ORF_seqs <- readAAStringSet(ORF_path)
+ORF_seqs <- AAStringSet(gsub("*", "", ORF_seqs))
+
+# Parsing hmmsearch results for each ORF seqeuences vs. ingroup HMM profile
+hit_tbl_header <- strsplit(str_replace_all(str_replace_all(str_replace_all(str_remove(readLines(hit_tblout_path)[2], "#")
+                                                                                  , "description of target", "description_of_target"),
+                                                                  "target name", "target_name"),
+                                                  "query name", "query_name"), "\\s+")[[1]][-1]
+hit_tbl <- read.table(hit_tblout_path)
+colnames(hit_tbl) <- hit_tbl_header
+write.table(hit_tbl, file = hit_tbl_path)
+
+# Splitting hit-table based on score cutoff into passing and failing sequences
 meets_cutoff <- as.vector(subset(hit_tbl, score >= cutoff)$target_name)
 fails_cutoff <- as.vector(subset(hit_tbl, score < cutoff)$target_name)
 
-ORF_hit_record <- subset(ORF_record, ORF_name %in% meets_cutoff)
-ORF_hit_names <- as.vector(ORF_hit_record$ORF_name)
-ORF_hit_seq <- str_replace(as.vector(ORF_hit_record$AA_Sequence), "[*]", "")
+# Extracting data for hmmer-passing and failing sequences
+ORF_hit_seq <- ORF_seqs[names(ORF_seqs) %in% meets_cutoff]
+ORF_miss_seq <- ORF_seqs[names(ORF_seqs) %in% fails_cutoff]
 
-ORF_miss_record <- subset(ORF_record, ORF_name %in% fails_cutoff)
-ORF_miss_names <- as.vector(ORF_miss_record$ORF_name)
-ORF_miss_seq <- str_replace(as.vector(ORF_miss_record$AA_Sequence), "[*]", "")
-
-# Retrieving sequences for hits
+# Writing individual sequence files for hits
 hit_index=1
-hit_list <- vector()
-while (hit_index<=length(ORF_hit_names)){
-  hit_list[length(hit_list)+1] <- paste0(">", ORF_hit_names[hit_index])
-  hit_list[length(hit_list)+1] <- ORF_hit_seq[hit_index]
-  
-  write(c(paste0(">", ORF_hit_names[hit_index]), ORF_hit_seq[hit_index]), 
-        file = paste0(hit_dir_path, ORF_hit_names[hit_index], ".fa"), 
-        ncolumns = 1)
-  
+while (hit_index <= length(ORF_hit_seq)){  
+  writeXStringSet(ORF_hit_seq[hit_index], file = paste0(hit_dir_path, names(ORF_hit_seq[hit_index]), ".fa"))
   hit_index=hit_index+1
 }
 
-# Retrieving sequences for misses
-miss_index=1
-miss_list <- vector()
-while (miss_index<=length(ORF_miss_names)){
-  miss_list[length(miss_list)+1] <- paste0(">", ORF_miss_names[miss_index])
-  miss_list[length(miss_list)+1] <- ORF_miss_seq[miss_index]
-  miss_index=miss_index+1
-}
+# Writing output files
+writeXStringSet(ORF_hit_seq, file=hit_list_path)
+writeXStringSet(ORF_miss_seq, file=miss_list_path)
 
-write(hit_list, file=hit_list_path, ncolumns = 1)
-write(miss_list, file=miss_list_path, ncolumns = 1)
-write.table(ORF_hit_record, file = ORF_hit_record_path)
-
-
-
+# Updating ORF_record (if applicable)
+if (file.exists(ORF_record_path)) {
+    ORF_record <- read.table(ORF_record_path, header = TRUE)
+    ORF_hit_record <- subset(ORF_record, ORF_name %in% meets_cutoff)
+    write.table(ORF_hit_record, file = ORF_hit_record_path)
+} 

@@ -1,11 +1,11 @@
 #!/bin/bash
 
-## Please run GMfind_intronless_orfs.bat first to populate Pipe/in with ORF_list.fa and ORF_record.txt for your genome of interest
+## Please run GMfind_intronless_orfs.sh first to populate Pipe/in with ORF_list.fa and ORF_record.txt for your genome of interest
 ## Please edit the GMfind_userinput.ctl file to adjust parameters and file locations before running
 ## Please add the following files to Pipe/in/: master_seq.fa, outgroups.fa, query_seq.fa
 ##    query_seq.fa: fasta-formatted list of "ingroup" sequences
 ##    outgroups.fa: fasta-formatted list of known "outgroup" sequences
-##    master_seq.fa: diverse subset of sequences from query_seqs.fa including a representatitive from each major subfamily in your ingroup
+##    master_seq.fa: diverse subset of sequences from query_seqs.fa including a representative from each major subfamily in your ingroup
 
 ## To run:
 ## $ bash path_to/GMPipe/Scripts/GMPipe_start.bat path_to/GMPipeline_userinput.ctl
@@ -13,6 +13,9 @@
 #-----------------------------------------------------
 
 source $1
+
+# Sets Pipeline to exit if any script fails with a non-zero status
+set -e
 
 echo "INITIALIZING GENE MINING PIPELINE"
 timestamp=$(date +%F_%T)
@@ -90,6 +93,7 @@ else
   echo "RUNNING HMMER ON PUTATIVE ORFS"
   timestamp=$(date +%F_%T)
   echo $timestamp
+  HMM_THREADS=$(expr $THREADS - 1)
   ${HMMER}/bin/hmmsearch --cpu $HMM_THREADS -o ${PIPE_PATH}/storage/hmm/hit_hmm.out --tblout ${PIPE_PATH}/storage/hmm/hit.tblout --domtblout ${PIPE_PATH}/storage/hmm/hit.domtblout --noali --notextw --tformat fasta ${PIPE_PATH}/storage/query_seq.hmm ${PIPE_PATH}/in/ORF_list.fa
   
   echo "PROCESSING HMMER RESULTS"

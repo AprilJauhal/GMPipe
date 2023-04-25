@@ -1,8 +1,12 @@
 # To run: Rscript path_to/iqtree_writer2.R PIPE_PATH
 # where PIPE_PATH is directory containing "storage", and "in" folders for executing GMPipeline 
 # Not designed to be run on its own
+# Purpose is to read results from optimization trees using just master_seq and outgroup sequences 
+# to determine optimal settings and ensure trees look correct. Identifies best substitution model.
 
 library(stringr)
+
+# Setting filepaths
 PIPE_PATH <- commandArgs(trailingOnly=TRUE)[1]
 
 # Calculating best model using model finder results for unconstrained trees
@@ -38,4 +42,5 @@ unconstr_pass <- str_count(unconstr_scores, "[+]")
 constr_pass <- str_count(constr_scores, "[+]")
 if(isTRUE(constr_pass<9) | isTRUE(unconstr_pass<9)) {stop('reference tree failed statistical tests: ingroups and outgroups may not significantly separated in tree, please check storage/opt_ML/main_unconstr/*.iqtree files and adjust reference and/or outgroup sequences')}
 
+# Reporting best model 
 write(best_model, file=paste0(PIPE_PATH, "/storage/opt_ML/best_model.txt"))
